@@ -1,43 +1,17 @@
-# Project
+# Introduction
 
-- [X] Single Thread Workflow
-
-- [ ] Multi-Threads Workflow
-
-- [ ] Multi-Processor Workflow
-
-- [ ] Multi-Agent Workflow
-
-- [ ] Python Library
+![swf](https://user-images.githubusercontent.com/8921629/41517267-683bae92-726e-11e8-841f-ba1e55009a3b.png)
 
 
 # Run
 
-Do : `python example.py`
+`python example_starter.py`
 
-You will see:
 
-```
-(MainThread) Setting a workflow
-(MainThread) [Execution] action1
-(MainThread) [ExampleWorkflow] action1
-(MainThread) [SetState] action1 completed, setting state to state2
-(MainThread) ---------------
-(MainThread) [Execution] action2
-(MainThread) [ExampleWorkflow] action2
-(MainThread) [SetState] action2 completed, setting state to state3
-(MainThread) ---------------
-(MainThread) [Execution] action3
-(MainThread) [ExampleWorkflow] action3
-(MainThread) [SetState] action3 completed, setting state to state1
-(MainThread) ---------------
-(MainThread) [Execution] action1
-(MainThread) [ExampleWorkflow] action1
-(MainThread) [SetState] action1 completed, setting state to state2
-(MainThread) ---------------
-(MainThread) [Execution] action2
-(MainThread) [ExampleWorkflow] action2
-(MainThread) [SetState] action2 completed, setting state to state3
+# TODO
 
-.........
-```
+- [ ] Activity queues should not be exposed to each other and should be handled by decider
+
+- [ ] Clean up and automate
+
+- [ ] Wrap up with Python libraries and modules
