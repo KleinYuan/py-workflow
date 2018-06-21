@@ -13,4 +13,4 @@ class IDAWorker(BaseWorker):
 		return response
 
 	def _mock_download(self, url):
-		self.logger.info('Download image from {}'.format(url))
+		self.logger.info('[IDAWorker] Download image from {}'.format(url))

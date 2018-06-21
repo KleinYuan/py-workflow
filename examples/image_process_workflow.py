@@ -1,6 +1,6 @@
 from image_process_activity_worker import IPAWorker
 from image_download_activity_worker import IDAWorker
-from lib.base_decider import BaseDecider
+from lib.base_handler import BaseHandler
 import logging
 
 
@@ -9,34 +9,41 @@ class IPWorkflow(object):
 	def __init__(self, job_queue):
 		logging.basicConfig(level=logging.DEBUG, format='(%(threadName)-9s) %(message)s', )
 		self.logger = logging
+
+		_handler_name = 'handler'
+		_ida_worker_name = 'image_download'
+		_ipa_worker_name = 'image_process'
 		self.activity_names = [
-			'image_download',
-			'image_process'
+			_ida_worker_name,
+			_ipa_worker_name
 		]
 
-		self.decider_name = 'decider'
-		self.decider = BaseDecider(
+		self.handler_name = _handler_name
+		self.handler = BaseHandler(
 			logger=self.logger,
-			name=self.decider_name,
+			name=self.handler_name,
 			activity_names=self.activity_names,
 			job_queue=job_queue,
-			next_worker='image_download')
+			init_worker=_ida_worker_name)
 
-		_activity_queues = self.decider.get_activity_queues()
+		_activity_queues = self.handler.get_activity_queues()
+		_ida_worker_activity_queue = _activity_queues[_ida_worker_name]
+		_ipa_worker_activity_queue = _activity_queues[_ipa_worker_name]
+
 		self.ida_worker = IDAWorker(
 			logger=self.logger,
-			name='image_download',
-			job_queue=_activity_queues['image_download'],
-			future_job_queue=_activity_queues['image_process'],
-			next_worker='image_process')
+			name=_ida_worker_name,
+			job_queue=_ida_worker_activity_queue,
+			response_queue=_ipa_worker_activity_queue,
+			next_worker=_ipa_worker_name)
 
 		self.ipa_worker = IPAWorker(
 			logger=self.logger,
-			name='image_process',
-			job_queue=_activity_queues['image_process'])
+			name=_ipa_worker_name,
+			job_queue=_ipa_worker_activity_queue)
 
 	def start(self):
-		self.decider.start()
+		self.handler.start()
 		self.ida_worker.start()
 		self.ipa_worker.start()
 

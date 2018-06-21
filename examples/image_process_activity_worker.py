@@ -13,4 +13,4 @@ class IPAWorker(BaseWorker):
 		return response
 
 	def _mock_up_process_image(self, img):
-		self.logger.info('Process image ...')
+		self.logger.info('[IPAWorker] Process image ...')

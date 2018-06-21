@@ -14,13 +14,13 @@ class BaseWorker(Thread):
 
 	}
 	"""
-	def __init__(self, logger, name, job_queue, future_job_queue=Queue(), next_worker=None):
+	def __init__(self, logger, name, job_queue, response_queue=Queue(), next_worker=None):
 		Thread.__init__(self)
 		self.logger = logger
 		self.name = name
 		self.next_worker = next_worker
 		self.job_queue = job_queue
-		self.future_job_queue = future_job_queue
+		self.response_queue = response_queue
 
 	def _deep_log(func):
 		def debug_wrapper(*args):
@@ -52,7 +52,7 @@ class BaseWorker(Thread):
 			}
 			self.job_queue.task_done()
 			self.logger.debug("[ActivityWorker | {}] Creating a job to {}".format(self.name, self.next_worker))
-			self.future_job_queue.put(_next_job)
+			self.response_queue.put(_next_job)
 
 	def process(self, job):
 		"""
